@@ -1,0 +1,421 @@
+<!--
+  ============================================================
+  WEB BUSINESS CARD — replace the 5 placeholders below:
+    1. AVATAR_URL   -> your image (link or local file path)
+    2. EMAIL        -> your email
+    3. GITHUB_URL   -> your GitHub profile
+    4. HASHNODE_URL -> your Hashnode blog
+    5. (optional) tweak the about.txt copy to taste
+  Search for "REPLACE:" to jump to each one.
+  ============================================================
+-->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tarang — Software Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap"
+  rel="stylesheet"
+/>
+
+<style>
+  :root {
+    --bg: #08090b;
+    --card: #101216;
+    --card-top: #16191e;
+    --border: #23272f;
+    --text: #e7e9ec;
+    --muted: #828b97;
+    --accent: #e8b04b; /* warm amber phosphor */
+    --accent-dim: #8a6a2e;
+    --ok: #6fbf8a; /* quiet terminal green */
+    --radius: 12px;
+    --mono:
+      "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html,
+  body {
+    margin: 0;
+    min-height: 100%;
+  }
+
+  body {
+    background:
+      radial-gradient(
+        900px 500px at 50% -10%,
+        rgba(232, 176, 75, 0.07),
+        transparent 60%
+      ),
+      var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    display: grid;
+    place-items: center;
+    padding: 28px 18px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* faint scanline texture — very subtle, terminal nod */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.012) 0px,
+      rgba(255, 255, 255, 0.012) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    z-index: 50;
+  }
+
+  .term {
+    width: 100%;
+    max-width: 780px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.03) inset,
+      0 24px 60px -24px rgba(0, 0, 0, 0.8);
+    overflow: hidden;
+  }
+
+  /* window chrome */
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 16px;
+    background: var(--card-top);
+    border-bottom: 1px solid var(--border);
+  }
+  .dots {
+    display: flex;
+    gap: 7px;
+  }
+  .dots i {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: #2a2f38;
+    display: block;
+  }
+  .dots i:nth-child(1) {
+    background: #46414a;
+  }
+  .bar .path {
+    color: var(--muted);
+    font-size: 12.5px;
+    letter-spacing: 0.2px;
+  }
+  .bar .path b {
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .body {
+    padding: 30px 28px 36px;
+  }
+
+  /* identity header */
+  .id {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 22px;
+  }
+  .avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 1px solid var(--border);
+    box-shadow: 0 0 0 3px rgba(232, 176, 75, 0.12);
+    background: #1a1d23;
+    flex: none;
+  }
+  .avatar-fallback {
+    width: 90px;
+    height: 90px;
+    flex: none;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--accent);
+    background: radial-gradient(120% 120% at 30% 20%, #1d2129, #0e1014);
+    border: 1px solid var(--border);
+    box-shadow: 0 0 0 3px rgba(232, 176, 75, 0.12);
+  }
+  .id h1 {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+  }
+  .id .role {
+    margin: 5px 0 0;
+    font-size: 15px;
+    color: var(--accent);
+  }
+  .id .loc {
+    margin: 3px 0 0;
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  /* shell lines */
+  .line {
+    margin: 16px 0 0;
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  .prompt {
+    color: var(--accent);
+  }
+  .prompt::before {
+    content: "$ ";
+    color: var(--accent-dim);
+  }
+  .cmd {
+    color: var(--text);
+  }
+  .out {
+    margin: 7px 0 0;
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.65;
+  }
+  .out .hl {
+    color: var(--text);
+  }
+
+  /* link "files" */
+  .links {
+    margin: 9px 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 11px 16px;
+    font-size: 14px;
+    color: var(--text);
+    text-decoration: none;
+    background: #15181d;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    transition:
+      border-color 0.18s ease,
+      transform 0.18s ease,
+      color 0.18s ease;
+  }
+  .links a .tag {
+    color: var(--accent);
+  }
+  .links a:hover,
+  .links a:focus-visible {
+    border-color: var(--accent-dim);
+    color: #fff;
+    transform: translateY(-1px);
+    outline: none;
+  }
+  .links a:focus-visible {
+    box-shadow: 0 0 0 2px rgba(232, 176, 75, 0.4);
+  }
+  .links svg {
+    width: 16px;
+    height: 16px;
+    flex: none;
+  }
+
+  .mail {
+    margin: 9px 0 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 16px;
+    color: var(--ok);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+  .mail:hover,
+  .mail:focus-visible {
+    border-bottom-color: var(--ok);
+    outline: none;
+  }
+
+  .cursor {
+    display: inline-block;
+    width: 9px;
+    height: 16px;
+    background: var(--accent);
+    margin-left: 2px;
+    vertical-align: -2px;
+    animation: blink 1.1s steps(1) infinite;
+  }
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  /* staggered reveal */
+  .reveal {
+    animation: in 0.45s ease forwards;
+  }
+  .l1 {
+    animation-delay: 0.15s;
+  }
+  .l2 {
+    animation-delay: 0.45s;
+  }
+  .l3 {
+    animation-delay: 0.75s;
+  }
+  .l4 {
+    animation-delay: 1.05s;
+  }
+  @keyframes in {
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .line {
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
+    .cursor {
+      animation: none;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .id {
+      gap: 13px;
+    }
+    .avatar,
+    .avatar-fallback {
+      width: 60px;
+      height: 60px;
+    }
+    .id h1 {
+      font-size: 19px;
+    }
+    .body {
+      padding: 20px 16px 24px;
+    }
+  }
+</style>
+
+<main class="term" aria-label="Digital business card">
+  <div class="bar">
+    <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+    <!-- REPLACE: shell path label if you like -->
+    <span class="path"><b>tarangchikhalia</b>@localhost:~$</span>
+  </div>
+
+  <div class="body">
+    <header class="id">
+      <!-- REPLACE: AVATAR_URL — your image. If it fails/empty, the monogram shows. -->
+      <img
+        class="avatar"
+        src="AVATAR_URL"
+        alt="Tarang"
+        onerror="
+          this.outerHTML =
+            '&lt;div class=&quot;avatar-fallback&quot; aria-hidden=&quot;true&quot;&gt;T&lt;/div&gt;'
+        "
+      />
+      <div>
+        <h1>Tarang</h1>
+        <p class="role">Software Engineer</p>
+        <p class="loc">Canada · backend &amp; systems</p>
+      </div>
+    </header>
+
+    <section class="line reveal l1" aria-label="About">
+      <span class="prompt"><span class="cmd">cat about.txt</span></span>
+      <!-- REPLACE: tweak this copy to taste -->
+      <p class="out">
+        Software Engineer. I build
+        <span class="hl">scalable backend systems</span>, AI powered products
+        and platform running <span class="hl">AI/LLM products</span>. Off the
+        clock: reading, hiking, and stargazing.
+      </p>
+    </section>
+
+    <section class="line reveal l2" aria-label="Links">
+      <span class="prompt"><span class="cmd">ls links/</span></span>
+      <nav class="links">
+        <!-- REPLACE: GITHUB_URL -->
+        <a
+          href="https://github.com/tarangchikhalia"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+            <path
+              d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"
+            />
+          </svg>
+          <span><span class="tag">→</span> github</span>
+        </a>
+        <!-- REPLACE: HASHNODE_URL -->
+        <a
+          href="https://hashnode.com/@tarangchikhalia"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path
+              d="M22.351 8.019l-6.37-6.37a5.63 5.63 0 00-7.962 0l-6.37 6.37a5.63 5.63 0 000 7.962l6.37 6.37a5.63 5.63 0 007.962 0l6.37-6.37a5.63 5.63 0 000-7.962zM12 15.953A3.953 3.953 0 1115.953 12 3.957 3.957 0 0112 15.953z"
+            />
+          </svg>
+          <span><span class="tag">→</span> hashnode</span>
+        </a>
+      </nav>
+    </section>
+
+    <section class="line reveal l3" aria-label="Contact">
+      <span class="prompt"><span class="cmd">echo $EMAIL</span></span>
+      <!-- REPLACE: EMAIL (in both the href and the visible text) -->
+      <p class="out">
+        <a class="mail" href="mailto:hello@tarangchikhalia.com">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <rect x="2" y="4" width="20" height="16" rx="2" />
+            <path d="m22 7-10 6L2 7" />
+          </svg>
+          hello@tarangchikhalia.com
+        </a>
+      </p>
+    </section>
+  </div>
+</main>
